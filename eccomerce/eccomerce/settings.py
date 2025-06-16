@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-i&w&s3ny8q4=33cj)irqmx+gkyncbduh3zfizq#i_kk*m3ozj_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pixelize.pythonanywhere.com']
 
 
 # Application definition
