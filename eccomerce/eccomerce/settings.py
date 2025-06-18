@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-i&w&s3ny8q4=33cj)irqmx+gkyncbduh3zfizq#i_kk*m3ozj_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['pixelize.pythonanywhere.com']
+ALLOWED_HOSTS = ['pixelize.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -65,7 +65,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True 
+# CORS_ALLOW_ALL_ORIGINS = True 
 
 ROOT_URLCONF = 'eccomerce.urls'
 

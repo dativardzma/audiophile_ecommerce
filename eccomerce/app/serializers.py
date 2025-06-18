@@ -6,19 +6,12 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    repeate_password = serializers.CharField(write_only=True)
-
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password', 'repeate_password']
+        fields = ['id', 'username', 'email', 'password']
         extra_kwargs = {
             'password': {'write_only': True},
         }
-
-    def validate(self, attrs):
-        if attrs['password'] != attrs['repeate_password']:
-            raise serializers.ValidationError("Passwords do not match.")
-        return attrs
         
     # def create(self, validated_data):
     #     validated_data.pop('repeate_password')  # Remove repeat_password before creating user
@@ -36,3 +29,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'refresh': str(token),
             'access': str(token.access_token),
         }
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+    
