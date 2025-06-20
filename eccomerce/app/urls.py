@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import CustomUserViewSet, LoginView
+from .views import CustomUserViewSet, LoginView, CategoryViewSet, ProductViewSet
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import permissions
@@ -7,9 +7,13 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework.routers import DefaultRouter
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from django.conf import settings
+from django.conf.urls.static import static
 
 router = DefaultRouter()
 router.register(r'users', CustomUserViewSet, basename='user')
+router.register(r'Products', ProductViewSet, basename='Products')
+router.register(r'Categorys', CategoryViewSet, basename='Categorys')
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -30,3 +34,6 @@ urlpatterns = [
     path('swagger.json', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('login/', LoginView.as_view(), name='login'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

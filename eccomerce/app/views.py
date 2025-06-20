@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from .models import CustomUser
+from .models import CustomUser, Category, Product
 from rest_framework.viewsets import ModelViewSet
-from .serializers import CustomUserSerializer, LoginSerializer
+from .serializers import CustomUserSerializer, LoginSerializer, ProductSerializer, CategorySerializer
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework import status
@@ -76,4 +76,10 @@ class LoginView(APIView):
                 }, status=status.HTTP_200_OK)
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-    
+class CategoryViewSet(ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer 
+
+class ProductViewSet(ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer

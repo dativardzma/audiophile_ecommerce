@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser
+from .models import CustomUser, Category, Product
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 
@@ -33,4 +33,23 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
+
+class ProductSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url=True)
+    
+    class Meta:
+        model = Product
+        fields = ['id', 'name', 'description', 'price', 'category', 'image', 'stock', 'created_at', 'features']
+        extra_kwargs = {
+            'image': {'required': False},
+        }
+    
+    # def create(self, validated_data):
+    #     return User.objects.create(**validated_data)
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']
+
     
