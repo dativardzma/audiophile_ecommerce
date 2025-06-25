@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, Category, Product
+from .models import CustomUser, Category, Product, Basket
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 
@@ -51,5 +51,23 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name']
+
+class BasketSerializer(serializers.ModelSerializer):
+    products = serializers.PrimaryKeyRelatedField(many=True, queryset=Product.objects.all())
+
+    class Meta:
+        model = Basket
+        fields = ['products']
+        read_only_fields = ['user']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        products = validated_data.pop('products')
+        basket, _ = Basket.objects.get_or_create(user=user)
+        basket.products.add(*products)
+        return basket
+
+        
+
 
     

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 # Create your models here.
 class CustomUser(AbstractUser):
@@ -12,7 +13,7 @@ class CustomUser(AbstractUser):
 
 
 # class CustomUser(AbstractUser):
-#     def __str__(self):
+#     def __str__(self):thon m
 #         return self.email
 
 #     def save(self, *args, **kwargs):
@@ -42,3 +43,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+class Basket(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product)

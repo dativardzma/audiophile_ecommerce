@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import CustomUserViewSet, LoginView, CategoryViewSet, ProductViewSet
+from .views import CustomUserViewSet, LoginView, CategoryViewSet, ProductViewSet, BasketViewSet
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import permissions
@@ -14,6 +14,7 @@ router = DefaultRouter()
 router.register(r'users', CustomUserViewSet, basename='user')
 router.register(r'Products', ProductViewSet, basename='Products')
 router.register(r'Categorys', CategoryViewSet, basename='Categorys')
+router.register(r'Baskets', BasketViewSet, basename='Baskets')
 
 schema_view = get_schema_view(
     openapi.Info(
