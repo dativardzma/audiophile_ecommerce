@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-i&w&s3ny8q4=33cj)irqmx+gkyncbduh3zfizq#i_kk*m3ozj_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-CORS_ALLOW_ALL_ORIGINS = True
+ALLOWED_HOSTS = ['pixelize.pythonanywhere.com', '127.0.0.1', 'localhost:5173']
 
 
 # Application definition
