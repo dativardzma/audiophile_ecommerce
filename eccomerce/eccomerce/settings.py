@@ -31,6 +31,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['pixelize.pythonanywhere.com', '127.0.0.1', 'localhost:5173']
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Your Vite dev server
+]
 
 # Application definition
 
@@ -78,7 +81,7 @@ MIDDLEWARE = [
 
 # CORS_ALLOW_ALL_ORIGINS = True 
 
-ROOT_URLCONF = 'eccomerce.urls'
+ROOT_URLCONF = 'eccomerce.urls'           
 
 TEMPLATES = [
     {
