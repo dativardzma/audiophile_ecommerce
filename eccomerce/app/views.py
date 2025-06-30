@@ -72,6 +72,7 @@ class LoginView(APIView):
 
             if user is not None:
                 return Response({
+                    'true_or_false': True,
                     'user': CustomUserSerializer(user).data,
                     'token': CustomUserSerializer().get_token(user)
                 }, status=status.HTTP_200_OK)
