@@ -76,7 +76,7 @@ class LoginView(APIView):
                     'user': CustomUserSerializer(user).data,
                     'token': CustomUserSerializer().get_token(user)
                 }, status=status.HTTP_200_OK)
-            # return Response({'error': 'Invalid credentials', 'true_or_false': False}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'error': 'Invalid credentials', 'true_or_false': False}, status=status.HTTP_401_UNAUTHORIZED)
 
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
