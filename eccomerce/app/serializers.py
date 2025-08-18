@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, Category, Product, Basket
+from .models import CustomUser, Category, Product, Basket, Include
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 
@@ -34,12 +34,18 @@ class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
+class IncludeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Include
+        fields = ['item', 'quantity']
+
 class ProductSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
+    # image = serializers.ImageField(use_url=True)
+    includes = IncludeSerializer(many=True, read_only=True)
     
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'category', 'image', 'stock', 'created_at', 'features']
+        fields = ['id', 'name', 'description', 'price', 'category', 'image', 'stock', 'created_at', 'features', 'slug', 'new', "categoryImage", "includes", "gallery"]
         extra_kwargs = {
             'image': {'required': False},
         }
