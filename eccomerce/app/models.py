@@ -42,6 +42,7 @@ class Product(models.Model):
     image = models.JSONField(blank=True, null=True)
     stock = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    related_products = models.ManyToManyField("self", blank=True)
     features = models.TextField(null=True, blank=True)
     # include = models.JSONField(blank=True, null=True)
     gallery = models.JSONField(blank=True, null=True)

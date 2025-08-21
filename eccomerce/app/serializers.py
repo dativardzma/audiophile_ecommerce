@@ -39,16 +39,33 @@ class IncludeSerializer(serializers.ModelSerializer):
         model = Include
         fields = ['item', 'quantity']
 
-class ProductSerializer(serializers.ModelSerializer):
-    # image = serializers.ImageField(use_url=True)
-    includes = IncludeSerializer(many=True, read_only=True)
-    
+class RelatedProductSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'category', 'image', 'stock', 'created_at', 'features', 'slug', 'new', "categoryImage", "includes", "gallery"]
-        extra_kwargs = {
-            'image': {'required': False},
-        }
+        fields = ['slug', 'name', 'image']
+
+    def get_image(self, obj):
+        # if obj.image is a list, return the first element
+        if isinstance(obj.image, list) and obj.image:
+            return obj.image[0]
+        return obj.image
+
+class ProductSerializer(serializers.ModelSerializer):
+    includes = IncludeSerializer(many=True, read_only=True)
+    others = RelatedProductSerializer(source='related_products', many=True, read_only=True)
+
+    class Meta:
+        model = Product
+        fields = [
+            'id', 'name', 'description', 'price', 'category',
+            'image', 'stock', 'created_at', 'features', 'slug',
+            'new', 'categoryImage', 'includes', 'gallery', 'others'
+        ]
+        # extra_kwargs = {
+        #     'image': {'required': False},
+        # }
     
     # def create(self, validated_data):
     #     return User.objects.create(**validated_data)

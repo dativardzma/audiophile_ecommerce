@@ -11,6 +11,7 @@ class IncludeInline(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     inlines = [IncludeInline]
     list_display = ['name', 'price', 'stock', 'new']
+    filter_horizontal = ('related_products',)
 
 # Register other models
 admin.site.register(CustomUser)
