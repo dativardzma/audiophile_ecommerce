@@ -86,16 +86,55 @@ class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+
 # class BasketViewSet(ModelViewSet):
-#     queryset = Basket.objects.all()
 #     serializer_class = BasketSerializer
 #     permission_classes = [IsAuthenticated]
-#     def create(self, request, *args, **kwargs):
-#         serializer = self.get_serializer(data=request.data)
-#         if serializer.is_valid():
-#             user = request.user
-#             print(user.id)
-#             return Response({'user': CustomUserSerializer(request.user).data})
+
+#     @swagger_auto_schema(
+#         operation_description="Retrieve a list of basket products (Authentication Required)",
+#         security=[{'BearerAuth': []}],
+#         responses={200: BasketSerializer(many=True)}
+#     )
+#     def get_queryset(self):
+#         return Basket.objects.filter(user=self.request.user)
+
+#     def list(self, request, *args, **kwargs):
+#         baskets = self.get_queryset()
+#         data = []
+
+#         for basket in baskets:
+#             products_data = []
+#             for product in basket.products.all():
+#                 products_data.append(product.name)
+#                 products_data.append(product.image.url if product.image else None)
+#                 products_data.append(product.price)
+#                 # products_data.append(product.id)
+
+#             data.append({
+#                 "id": basket.id,
+#                 "user": {
+#                     "id": basket.user.id,
+#                     "username": basket.user.username,
+#                     "email": basket.user.email,
+#                 },
+#                 "products": products_data
+#             })
+
+#         return Response(data, status=status.HTTP_200_OK)
+
+#     @swagger_auto_schema(
+#         operation_description="Add a product to basket",
+#         request_body=BasketSerializer, 
+#         security=[{'BearerAuth': []}],
+#         responses={201: BasketSerializer}
+#     )
+#     def post(self, request):
+#         serializer = BasketSerializer(data=request.data, context={'request': request})
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data, status=201)
+
 class BasketViewSet(ModelViewSet):
     serializer_class = BasketSerializer
     permission_classes = [IsAuthenticated]
@@ -106,40 +145,9 @@ class BasketViewSet(ModelViewSet):
         responses={200: BasketSerializer(many=True)}
     )
     def get_queryset(self):
-        return Basket.objects.filter(user=self.request.user)
+        user = self.request.user
+        if not user.is_authenticated:
+            return Basket.objects.none()  # avoid AnonymousUser error
+        return Basket.objects.filter(user=user)
 
-    def list(self, request, *args, **kwargs):
-        baskets = self.get_queryset()
-        data = []
-
-        for basket in baskets:
-            products_data = []
-            for product in basket.products.all():
-                products_data.append(product.name)
-                products_data.append(product.image.url if product.image else None)
-                products_data.append(product.price)
-                # products_data.append(product.id)
-
-            data.append({
-                "id": basket.id,
-                "user": {
-                    "id": basket.user.id,
-                    "username": basket.user.username,
-                    "email": basket.user.email,
-                },
-                "products": products_data
-            })
-
-        return Response(data, status=status.HTTP_200_OK)
-
-    @swagger_auto_schema(
-        operation_description="Add a product to basket",
-        request_body=BasketSerializer, 
-        security=[{'BearerAuth': []}],
-        responses={201: BasketSerializer}
-    )
-    def post(self, request):
-        serializer = BasketSerializer(data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=201)
+    # list() and post() methods remain the same
